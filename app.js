@@ -3,12 +3,13 @@ const app = express();
 const mongoose = require('mongoose');
 const Listing = require('./model/listing'); // Corrected capitalization
 const path = require('path');
+const ejsMate=require('ejs-mate');
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
+app.engine('ejs',ejsMate);
 
 main().then(() => console.log("Database Connected Successfully")).catch(err => {
     console.log(`Error occurred: ${err}`);
