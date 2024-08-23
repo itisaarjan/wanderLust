@@ -10,9 +10,17 @@
     <ul>
         <li><%=item.title%></li>
         <li><%=item.description%></li>
-        <li><%=item.price%></li>
+        <li>$ <%=(item.price).toLocaleString()%></li>
         <li><%=item.location%></li>
         <li><%=item.country%></li>
+
+        <form action="/listings/edit/<%=item._id%>" method="GET">
+            <button>Edit</button>
+        </form>
+        <form action="/listings/delete/<%=item.id%>" method="GET">
+            <button>Delete</button>
+        </form>
+        
     </ul>
 </body>
 </html>
