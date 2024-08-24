@@ -114,3 +114,12 @@ body{
     background-color: #fe424d  !important;
     border: none !important;
 }
+
+/* show-page */
+.listing-btn{
+    display: flex;
+    gap:1.6rem;
+}
+.show-card{
+    padding-left: 10rem;
+}

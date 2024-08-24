@@ -1,19 +1,30 @@
 <%layout("/layouts/boilerplate")%>
 <body>
-    <h3>Listing Details: </h3>
-    <ul>
-        <li><%=item.title%></li>
-        <li><%=item.description%></li>
-        <li>$ <%=(item.price).toLocaleString()%></li>
-        <li><%=item.location%></li>
-        <li><%=item.country%></li>
-
-        <form action="/listings/edit/<%=item._id%>" method="GET">
-            <button>Edit</button>
-        </form>
-        <form action="/listings/delete/<%=item.id%>" method="GET">
-            <button>Delete</button>
-        </form>
-        
-    </ul>
+    
+    <div class="card show-card mt-5" style="width: 90%; height: 35rem;">
+    <h3>Listing Details</h3>
+    <img src="<%=item.imageUrl%>" class="card-img-top" style="height: 20rem;"alt="listing-image">
+    <div class="card-body">
+        <p class="card-text">
+            <b><%=item.title%></b>
+            <br>
+            <%=item.description%>
+            <br>
+            $<%=item.price.toLocaleString()%>
+            <br>
+            <%=item.location%>
+            <br>
+            <%=item.country%>
+        </p>
+  </div>
+  <div class="listing-btn">
+    <form action="/listings/edit/<%=item._id%>" method="get">
+    <button class="btn btn-dark add-btn">Edit</button>
+    </form>
+    <form action="/listings/delete/<%=item._id%>" method="get">
+    <button class="btn btn-dark">Delete</button>
+  </form>
+  </div>
+</div>
+    
 </body>
