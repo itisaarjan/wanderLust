@@ -10,7 +10,8 @@
             <br>
             <%=item.description%>
             <br>
-            $<%=item.price.toLocaleString()%>
+            $<%= item.price ? item.price.toLocaleString() : 'N/A' %>
+
             <br>
             <%=item.location%>
             <br>

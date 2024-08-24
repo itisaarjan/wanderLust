@@ -70,17 +70,10 @@ app.get('/listings/edit/:id', async (req, res) => {
 
 app.post('/listings/edit/:id', async (req, res) => {
     const { id } = req.params;
-    const updatedFields = {
-        title: req.body.title,
-        description: req.body.description,
-        imageUrl: req.body.imageUrl,
-        price: req.body.price,
-        location: req.body.location,
-        country: req.body.country
-    };
+    const listing=req.body.Listing;
 
     try {
-        await Listing.findByIdAndUpdate(id, updatedFields);
+        await Listing.findByIdAndUpdate(id, listing);
         console.log("Updated document successfully");
         res.redirect('/listings');
     } catch (err) {

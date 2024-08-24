@@ -10,7 +10,8 @@
   <div class="card-body">
     <p class="card-text"><b><%=item.title%></b>
       <br>
-      $<%=item.price.toLocaleString()%> / night
+      $<%= item.price ? item.price.toLocaleString() : 'N/A' %> / night
+
     </p>
   </div>
 </div>
