@@ -1,12 +1,52 @@
 <%layout("/layouts/boilerplate")%>
 <body>
-    <form action="/listings/new" method="post">
-        <input type="text" name="title" placeholder="Enter title of the property">
-        <input type="textarea" name="description" placeholder="Enter description of the property">
-        <input type="text" name="imageUrl" placeholder="Enter the image url of the property image">
-        <input type="number" name="price" placeholder="Enter price">
-        <input type="text" name="location" placeholder="Enter location of the property">
-        <input type="text" name="country" placeholder="Enter country located">
-        <button type="submit">Submit</button>
+   <div class="row">
+     <div class="col-8 offset-2">
+        <br>
+        <br>
+         <h3>Add a listing</h3>
+         <br>
+         <form action="/listings/new" method="post">
+        
+        <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" name="title"  class="form-control" placeholder="Add a catchy title">
+        </div>
+       <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea name="description"  class="form-control"></textarea>
+       </div>
+        
+       <div class="mb-3">
+        <label for="imageUrl" class="form-label">Image Url</label>
+        <input type="text" name="imageUrl" class="form-control">
+       </div>
+        
+        <div class="row">
+            <div class="mb-3 col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" name="price" class="form-control" placeholder="1200">
+        </div>
+        
+        <div class="mb-3 col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" name="country" class="form-control" placeholder="USA">
+        </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="location" class="form-label'">Location</label>
+            <input type="text" name="location" class="form-control">
+        </div>
+        
+        
+        
+        <br>
+        
+        <button type="submit" class="btn btn-dark add-btn">Add</button>
+        <br>
+        <br>
     </form>
+     </div>
+   </div>
 </body>

@@ -1,12 +1,22 @@
 <%layout("/layouts/boilerplate")%>
 <body>
     <h1>All listings</h1>
-
-    
-<ul>
+    <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-1">
     <%for (let item of result){%>
-    <li><a href="/listings/<%=item._id%>"><%=item.title%></a></li>
-   
+    <a href="/listings/<%=item._id%>" class="listing-link">
+      <div class="card col" >
+  <img src="<%=item.imageUrl%>" class="card-img-top" alt="listing-image" style="height: 20rem;">
+   <div class="card-img-overlay"></div>
+  <div class="card-body">
+    <p class="card-text"><b><%=item.title%></b>
+      <br>
+      $<%=item.price.toLocaleString()%> / night
+    </p>
+  </div>
+</div>
+    </a>
 <%}%>
-</ul>
+</div>
+  
+
 </body>

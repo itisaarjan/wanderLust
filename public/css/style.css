@@ -1,4 +1,36 @@
 /* Nav bar */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+.plus-jakarta-sans-regular-400{
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.plus-jakarta-sans-medium-500 {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+.plus-jakarta-sans-semibold-600 {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+body{
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.container{
+    flex: 1;
+}
+
 
 
 .navbar {
@@ -29,7 +61,9 @@
     justify-content: center;
     align-items: center;
 }
-
+.f-info-links{
+    gap: 0.8rem;
+}
 .f-info-social i{
     margin-right: 1rem;
     font-size: 1.65rem;
@@ -41,4 +75,42 @@
 }
 .f-info-links a:hover{
     text-decoration: underline;
+}
+
+/* Cards */
+
+.card{
+    border: none !important;
+    margin-bottom: 2rem;
+}
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+
+.card-body{
+    padding: 0 !important;
+}
+.card-text p{
+    font-weight: 400 !important;
+}
+.listing-link{
+    text-decoration: none;
+}
+
+
+/* Card Effect */
+.card-img-overlay{
+    opacity: 0;
+}
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color: white;
+}
+
+/* new page */
+.add-btn{
+    background-color: #fe424d  !important;
+    border: none !important;
 }
