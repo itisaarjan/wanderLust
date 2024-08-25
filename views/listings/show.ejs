@@ -1,13 +1,11 @@
 <%layout("/layouts/boilerplate")%>
 <body>
     
-    <div class="card show-card mt-5" style="width: 90%; height: 35rem;">
-    <h3>Listing Details</h3>
+    <div class="card show-card mb- mt-1 listing-card" style="width: 90%; height: 55rem;">
+    <h3><b><%=item.title%></b></h3>
     <img src="<%=item.imageUrl%>" class="card-img-top" style="height: 20rem;"alt="listing-image">
-    <div class="card-body">
+    <div class="card-body mb-1 mt-1">
         <p class="card-text">
-            <b><%=item.title%></b>
-            <br>
             <%=item.description%>
             <br>
             $<%= item.price ? item.price.toLocaleString() : 'N/A' %>
@@ -18,13 +16,30 @@
             <%=item.country%>
         </p>
   </div>
-  <div class="listing-btn">
-    <form action="/listings/edit/<%=item._id%>" method="get">
+  <div class="listing-btn  mt-1">
+    <form action="/listings/edit/<%=item._id%>" method="get" class="mb-1 mt-1">
     <button class="btn btn-dark add-btn">Edit</button>
     </form>
-    <form action="/listings/delete/<%=item._id%>" method="get">
+    <form action="/listings/delete/<%=item._id%>" method="get" class="mb-1 mt-1">
     <button class="btn btn-dark">Delete</button>
-  </form>
+    </form>
+  </div>
+  <hr>
+  <div class="mb-1 mt-1">
+    <h4 class="mt-1 cols-8 ">Leave A Review</h4>
+    <form action="/listings/<%=item._id%>/reviews" method="post" novalidate class="needs-validation">
+      <div>
+        <label for="rating" class="form-label">Rating</label>
+        <input type="range" name="review[rating]" class="form-range"id="rating" min="1" max="5" >
+      </div>
+      <div class="mb-1 mt-1">
+        <label for="comment" class="form-label">Comments</label>
+        <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
+        <div class="invalid-feedback">Enter a valid Comment</div>
+      </div>
+
+      <button type="submit" class="btn btn-outline-dark">Submit</button>
+    </form>
   </div>
 </div>
     
