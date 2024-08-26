@@ -9,7 +9,10 @@ const ExpressError = require('./utils/ExpressError');
 const ListingSchema=require('./schema');
 const review=require("./model/reviews");
 const {reviewSchema1}=require('./schema')
+const methodOverride = require('method-override');
 
+
+app.use(methodOverride('_method'));
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -95,7 +98,7 @@ app.post('/listings/:id/reviews',validateReview,wrapAsync(async (req,res,next)=>
 
 app.get("/listings/:id", wrapAsync(async (req, res, next) => {
     const { id } = req.params;
-    const item = await Listing.findById(id);
+    const item = await Listing.findById(id).populate('reviews');
     res.render('./listings/show', { item });
 }));
 
@@ -105,6 +108,15 @@ app.get("/listings/delete/:id", wrapAsync(async (req, res, next) => {
     console.log('Deleted successfully');
     res.redirect('/listings');
 }));
+
+app.delete('/listings/:id/reviews/:reviewid',wrapAsync(async(req,res,next)=>{
+    let {id,reviewid}=req.params;
+
+    await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewid}});
+    await review.findByIdAndDelete(reviewid);
+
+    res.redirect(`/listings/${id}`);
+}))
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, "Page Not Found!"));

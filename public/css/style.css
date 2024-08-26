@@ -31,8 +31,15 @@ body{
     flex: 1;
 }
 
+.listing-card{
+    overflow-x: hidden;
+    overflow-y:scroll;
+}
 
-
+.listing-cards{
+    border: none !important;
+    margin-bottom: 2rem;
+}
 
 .navbar {
     height: 5rem; /* Corrected the comma to a semicolon */
@@ -84,7 +91,6 @@ body{
 /* Cards */
 
 .card{
-    border: none !important;
     margin-bottom: 2rem;
 }
 .card-img-top{

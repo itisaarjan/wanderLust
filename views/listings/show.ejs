@@ -1,9 +1,9 @@
 <%layout("/layouts/boilerplate")%>
 <body>
     
-    <div class="card show-card mb- mt-1 listing-card" style="width: 90%; height: 55rem;">
+    <div class="card show-card mb- mt-1 listing-card listing-cards" style="width: 95%; height: 40rem;">
     <h3><b><%=item.title%></b></h3>
-    <img src="<%=item.imageUrl%>" class="card-img-top" style="height: 20rem;"alt="listing-image">
+    <img src="<%=item.imageUrl%>" class="card-img-top" style="height: 20rem;width: 80%;"alt="listing-image">
     <div class="card-body mb-1 mt-1">
         <p class="card-text">
             <%=item.description%>
@@ -40,6 +40,27 @@
 
       <button type="submit" class="btn btn-outline-dark">Submit</button>
     </form>
+    <hr>
+
+    <p><b>All Reviews</b></p>
+    <div class="row">
+      <% for (review of item.reviews){%>
+      <div class="card col-4 m-3 ">
+        <div class="card-body">
+          <h5 class="card-title">Jane Doe</h5>
+          <p class="card-text">
+            <%=review.comment%>
+          </p>
+          <p class="card-text"><%=review.rating%> stars</p>
+        </div>
+        <form action="/listings/<%=item._id%>/reviews/<%=review._id%>?_method=DELETE" class="mb-2" method="POST" >
+          <button class="btn btn-sm btn-dark mb-1 mt-1">Delete</button>
+        </form>
+      </div>
+       
+      <%}%>
+    </div>
+
   </div>
 </div>
     
