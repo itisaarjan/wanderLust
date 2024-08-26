@@ -5,7 +5,7 @@ const Listing = require('../model/listing');
 const { validateListing } = require('./validate');
 const ExpressError = require('../utils/ExpressError');
 const flash=require('connect-flash')
-
+const {isLoggedIn}=require('../middleware');
 // Listing routes
 
 router.get('/', wrapAsync(async (req, res, next) => {
@@ -13,11 +13,11 @@ router.get('/', wrapAsync(async (req, res, next) => {
     res.render("./listings/index.ejs", { result });
 }));
 
-router.get('/new', (req, res) => {
+router.get('/new',isLoggedIn, (req, res) => {
     res.render('./listings/addListing');
 });
 
-router.post('/new', validateListing, wrapAsync(async (req, res, next) => {
+router.post('/new',isLoggedIn, validateListing, wrapAsync(async (req, res, next) => {
     const listing = req.body.Listing;
     await Listing.create(listing); // Await the creation of the listing
     req.flash("success","Listing added successfully!")
@@ -25,7 +25,7 @@ router.post('/new', validateListing, wrapAsync(async (req, res, next) => {
     res.redirect('/listings');
 }));
 
-router.get('/edit/:id', wrapAsync(async (req, res, next) => {
+router.get('/edit/:id',isLoggedIn, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const item = await Listing.findById(id);
     if(!item){
@@ -35,7 +35,7 @@ router.get('/edit/:id', wrapAsync(async (req, res, next) => {
     res.render('./listings/edit', { item });
 }));
 
-router.post('/edit/:id', validateListing, wrapAsync(async (req, res, next) => {
+router.post('/edit/:id',isLoggedIn, validateListing, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const listing = req.body.Listing;
     await Listing.findByIdAndUpdate(id, listing);
@@ -44,7 +44,7 @@ router.post('/edit/:id', validateListing, wrapAsync(async (req, res, next) => {
     res.redirect('/listings');
 }));
 
-router.get("/:id", wrapAsync(async (req, res, next) => {
+router.get("/:id",isLoggedIn, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const item = await Listing.findById(id).populate('reviews');
     if(!item){
@@ -54,7 +54,7 @@ router.get("/:id", wrapAsync(async (req, res, next) => {
     res.render('./listings/show', { item });
 }));
 
-router.get("/delete/:id", wrapAsync(async (req, res, next) => {
+router.get("/delete/:id",isLoggedIn, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     await Listing.deleteOne({ _id: id });
     req.flash("success","Listing deleted succesfully")
