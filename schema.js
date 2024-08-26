@@ -1,7 +1,7 @@
 
 const joi=require('joi');
 
-const schema=joi.object({
+const ListingSchema=joi.object({
     Listing:joi.object({
         title:joi.string()
     .required(),
@@ -15,7 +15,7 @@ const schema=joi.object({
     }).required()
 })
 
-module.exports=schema;
+module.exports=ListingSchema;
 
 module.exports.reviewSchema1 = joi.object({
     review: joi.object({

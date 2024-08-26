@@ -44,6 +44,9 @@
 
     <p><b>All Reviews</b></p>
     <div class="row">
+      <%if (item.reviews.length===0){%>
+        <h2>No reviews added</h2>
+        <%}%>
       <% for (review of item.reviews){%>
       <div class="card col-4 m-3 ">
         <div class="card-body">
