@@ -5,6 +5,8 @@ const Listing = require('../model/listing');
 const review = require('../model/reviews');
 const { validateReview } = require('./validate');
 const ExpressError = require('../utils/ExpressError');
+const flash=require('connect-flash')
+
 
 // Review routes
 
@@ -16,7 +18,7 @@ router.post('/:id/reviews', validateReview, wrapAsync(async (req, res, next) => 
 
     await result.save();
     await newReview.save();
-
+    req.flash("success","Review added succesfully");
     console.log("new review saved");
     res.redirect(`/listings/${result._id}`);
 }));
@@ -27,6 +29,7 @@ router.delete('/:id/reviews/:reviewid', wrapAsync(async (req, res, next) => {
     await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewid } });
     await review.findByIdAndDelete(reviewid);
 
+    req.flash("success","review deleted successfully");
     res.redirect(`/listings/${id}`);
 }));
 

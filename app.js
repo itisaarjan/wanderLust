@@ -7,6 +7,12 @@ const ExpressError = require('./utils/ExpressError');
 const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport=require('passport');
+const localStrategy=require('passport-local');
+const User=require('./model/user');
+
+
+
 
 // Set up session and flash
 app.use(session({
@@ -16,6 +22,15 @@ app.use(session({
     cookie: { secure: false } // For development; change to true in production with HTTPS
 }));
 app.use(flash());
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
 
 app.use(methodOverride('_method'));
 app.set("views", path.join(__dirname, "views"));
@@ -33,6 +48,7 @@ app.use((req, res, next) => {
 
 const listingRoutes = require('./routes/listing');
 const reviewRoutes = require('./routes/review');
+const userRoutes=require('./routes/user');
 
 main().then(() => console.log("Database Connected Successfully")).catch(err => {
     console.log(`Error occurred: ${err}`);
@@ -44,6 +60,7 @@ async function main() {
 
 app.use('/listings', listingRoutes);
 app.use('/listings', reviewRoutes);
+app.use(userRoutes);
 
 app.get('/', (req, res) => {
     res.send("Server is working");
