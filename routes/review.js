@@ -6,7 +6,7 @@ const review = require('../model/reviews');
 const { validateReview } = require('./validate');
 const ExpressError = require('../utils/ExpressError');
 const flash=require('connect-flash');
-const { isLoggedIn, isOwner } = require('../middleware');
+const { isLoggedIn, isOwner, isAuthor } = require('../middleware');
 
 
 // Review routes
@@ -25,7 +25,7 @@ router.post('/:id/reviews',isLoggedIn, validateReview, wrapAsync(async (req, res
     res.redirect(`/listings/${result._id}`);
 }));
 
-router.delete('/:id/reviews/:reviewid',isLoggedIn,isOwner, wrapAsync(async (req, res, next) => {
+router.delete('/:id/reviews/:reviewid',isLoggedIn,isAuthor, wrapAsync(async (req, res, next) => {
     let { id, reviewid } = req.params;
 
     await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewid } });
