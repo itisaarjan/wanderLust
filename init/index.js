@@ -21,7 +21,9 @@ listing.deleteMany({})
 .catch(err=>{
     console.log(`Error occured: ${err}`);
 });
-
+data.data=data.data.map((obj)=>({
+    ...obj,owner:"66ccc9ef9f533eb4a8f5ad2d"
+}))
 listing.insertMany(data.data)
 .then(result=>{
     console.log(`Succesfully added data: ${result}`);

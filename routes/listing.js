@@ -1,11 +1,23 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
 const wrapAsync = require('../utils/wrapAsync');
 const Listing = require('../model/listing');
 const { validateListing } = require('./validate');
 const ExpressError = require('../utils/ExpressError');
-const flash=require('connect-flash')
-const {isLoggedIn}=require('../middleware');
+const flash = require('connect-flash');
+const { isLoggedIn, isOwner } = require('../middleware');
+
+// Middleware to validate ObjectId
+function isValidObjectId(req, res, next) {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        req.flash("error", "Invalid listing ID");
+        return res.redirect('/listings');
+    }
+    next();
+}
+
 // Listing routes
 
 router.get('/', wrapAsync(async (req, res, next) => {
@@ -13,52 +25,53 @@ router.get('/', wrapAsync(async (req, res, next) => {
     res.render("./listings/index.ejs", { result });
 }));
 
-router.get('/new',isLoggedIn, (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('./listings/addListing');
 });
 
-router.post('/new',isLoggedIn, validateListing, wrapAsync(async (req, res, next) => {
+router.post('/new', isLoggedIn, validateListing, wrapAsync(async (req, res, next) => {
     const listing = req.body.Listing;
-    await Listing.create(listing); // Await the creation of the listing
-    req.flash("success","Listing added successfully!")
-    console.log("Added Successfully");
+    let result = new Listing(listing);
+    result.owner=req.user._id;
+    await result.save();
+    req.flash("success", "Listing added successfully!");
     res.redirect('/listings');
 }));
 
-router.get('/edit/:id',isLoggedIn, wrapAsync(async (req, res, next) => {
+router.get('/edit/:id', isLoggedIn,isOwner, isValidObjectId, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const item = await Listing.findById(id);
-    if(!item){
-        req.flash("error","The listing does not exist");
-        res.redirect("/listings");
+    if (!item) {
+        req.flash("error", "The listing does not exist");
+        return res.redirect("/listings");
     }
     res.render('./listings/edit', { item });
 }));
 
-router.post('/edit/:id',isLoggedIn, validateListing, wrapAsync(async (req, res, next) => {
+router.post('/edit/:id', isLoggedIn,isOwner, isValidObjectId, validateListing, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
     const listing = req.body.Listing;
     await Listing.findByIdAndUpdate(id, listing);
-    req.flash('success',"Listing updated successfully");
-    console.log("Updated document successfully");
+    req.flash('success', "Listing updated successfully");
     res.redirect('/listings');
 }));
 
-router.get("/:id",isLoggedIn, wrapAsync(async (req, res, next) => {
+router.get("/:id", isValidObjectId, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
-    const item = await Listing.findById(id).populate('reviews');
-    if(!item){
-        req.flash("error","The listing does not exist");
-        res.redirect("/listings");
+    const item = await Listing.findById(id).populate({path:'reviews',populate:{
+        path:'author'
+    }}).populate("owner");
+    if (!item) {
+        req.flash("error", "The listing does not exist");
+        return res.redirect("/listings");
     }
     res.render('./listings/show', { item });
 }));
 
-router.get("/delete/:id",isLoggedIn, wrapAsync(async (req, res, next) => {
+router.get("/delete/:id", isLoggedIn,isOwner, isValidObjectId, wrapAsync(async (req, res, next) => {
     const { id } = req.params;
-    await Listing.deleteOne({ _id: id });
-    req.flash("success","Listing deleted succesfully")
-    console.log('Listing Deleted successfully');
+    await Listing.findByIdAndDelete(id);
+    req.flash("success", "Listing deleted successfully");
     res.redirect('/listings');
 }));
 

@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 const review=require('./reviews');
+const user=require("./user");
 
 let listingSchema=new mongoose.Schema({
     title:{
@@ -29,7 +30,11 @@ let listingSchema=new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
             ref:"Review"
         }
-    ]
+    ],
+    owner:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    }
 })
 
 
