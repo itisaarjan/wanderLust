@@ -5,6 +5,10 @@ const wrapAsync = require('../utils/wrapAsync');
 const { validateListing } = require('../controllers/validateController');
 const { isLoggedIn, isOwner } = require('../middleware');
 const listingController = require('../controllers/listingController');
+const multer=require('multer');
+const {storage}=require("../cloudConfig");
+const upload=multer({storage});
+
 
 // Middleware to validate ObjectId
 function isValidObjectId(req, res, next) {
@@ -22,7 +26,7 @@ router.route('/')
 
 router.route('/new')
     .get(isLoggedIn, listingController.renderNewForm)
-    .post(isLoggedIn, validateListing, wrapAsync(listingController.createListing));
+    .post(isLoggedIn,upload.single('Listing[image]'),validateListing,wrapAsync(listingController.createListing));
 
 router.route('/edit/:id')
     .all(isLoggedIn, isOwner, isValidObjectId) // Apply middleware to all methods for this route
