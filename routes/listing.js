@@ -31,7 +31,7 @@ router.route('/new')
 router.route('/edit/:id')
     .all(isLoggedIn, isOwner, isValidObjectId) // Apply middleware to all methods for this route
     .get(wrapAsync(listingController.renderEditForm))
-    .post(validateListing, wrapAsync(listingController.updateListing));
+    .post(upload.single('Listing[image]'),validateListing, wrapAsync(listingController.updateListing));
 
 router.route('/:id')
     .all(isValidObjectId)

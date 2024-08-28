@@ -28,13 +28,22 @@ module.exports.renderEditForm = async (req, res) => {
         req.flash("error", "The listing does not exist");
         return res.redirect("/listings");
     }
-    res.render('./listings/edit', { item });
+    let originalImageUrl=item.image.url; 
+    originalImageUrl=originalImageUrl.replace("/upload","/upload/h_300,w_200")
+    res.render('./listings/edit', { item,originalImageUrl });
+
 };
 
 module.exports.updateListing = async (req, res) => {
     const { id } = req.params;
     const listing = req.body.Listing;
-    await Listing.findByIdAndUpdate(id, listing);
+    let result=await Listing.findByIdAndUpdate(id, listing);
+    if(typeof req.file!='undefined'){
+        let url=req.file.path;
+        let filename=req.file.filename;
+        result.image={url,filename}
+        await result.save()
+    }
     req.flash('success', "Listing updated successfully");
     res.redirect('/listings');
 };

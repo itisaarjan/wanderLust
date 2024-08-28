@@ -6,7 +6,7 @@
         <br>
          <h3>Edit Listing</h3>
          <br>
-         <form action="/listings/edit/<%=item._id%>" method="post" novalidate class="needs-validation">
+         <form action="/listings/edit/<%=item._id%>" method="post" novalidate class="needs-validation" enctype="multipart/form-data">
         
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
@@ -23,13 +23,14 @@
                 Please enter a valid description.
             </div>
         </div>
-        
+     <div class="mb-3" style="width: 200px;">
+    <p>Original Listing Image</p>
+    <img src="<%=originalImageUrl%>" style="max-width: 100%; height: auto;">
+</div>
         <div class="mb-3">
-            <label for="imageUrl" class="form-label">Image URL</label>
-            <input type="text" id="imageUrl" name="Listing[imageUrl]" class="form-control" value="<%=item.imageUrl%>" required>
-            <div class="invalid-feedback">
-                Please enter a valid URL for the image.
-            </div>
+            <label for="imageUrl" class="form-label">Upload New Image </label>
+            <input type="file" id="imageUrl" name="Listing[image]" class="form-control"  >
+            
         </div>
         
         <div class="row">
