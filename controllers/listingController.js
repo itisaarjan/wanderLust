@@ -1,4 +1,8 @@
 const Listing = require('../model/listing');
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapToken=process.env.MAP_TOKEN;
+const geocodingClient=mbxGeocoding({accessToken:mapToken})
+
 
 module.exports.index = async (req, res) => {
     const result = await Listing.find({});
@@ -10,16 +14,28 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createListing = async (req, res) => {
-    let url=req.file.path;
-    let filename=req.file.filename;
-    const listing = req.body.Listing;
-    let result = new Listing(listing);
-    result.owner = req.user._id;
-    result.image={url,filename};
-    await result.save();
-    req.flash("success", "Listing added successfully!");
-    res.redirect('/listings');
+  let response = await geocodingClient.forwardGeocode({
+    query: req.body.Listing.location,
+    limit:   
+ 2
+  }).send();
+
+  let url = req.file.path;
+  let filename = req.file.filename;   
+
+  const listing = req.body.Listing;
+  let result = new Listing(listing);
+  result.owner = req.user._id;
+  result.image = { url, filename };
+
+  // Corrected line: assign retrieved geometry to result.geometry
+  result.geometry = response.body.features[0].geometry;
+
+  await result.save();
+  req.flash("success", "Listing added successfully!");
+  res.redirect('/listings');
 };
+
 
 module.exports.renderEditForm = async (req, res) => {
     const { id } = req.params;

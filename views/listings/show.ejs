@@ -64,14 +64,15 @@
                 <button class="btn btn-dark mt-1 offset-5">Login</button>
               </form>
             <%}%>
-            <hr>
-            <p><b>All Reviews</b></p>
+            
+            <%if(item.reviews.length>0){%>
             <div class="row">
+                <p><b>All Reviews</b></p>
                 <% if (item.reviews.length === 0) { %>
-                    <h2>No reviews added</h2>
+                    <h2 class="mt-4">No reviews added</h2>
                 <% } %>
                 <% for (review of item.reviews) { %>
-                    <div class="card col-4 m-3">
+                    <div class="card col-4 m-1">
                         <div class="card-body">
                             <h5 class="card-title mt-2"><%=review.author.username%></h5>
                             
@@ -88,8 +89,30 @@
                         </form>
                     </div>
                 <% } %>
+                <hr>
             </div>
+            <%}%>
         </div>
+        <div class="col-8 offset-0 mb-3">
+                <h3>Where you'll be</h3>
+                <div id="map">
+
+                </div>
+        </div>
+       <script>
+    const coordinates = JSON.parse('<%= JSON.stringify(item.geometry.coordinates) %>');
+    mapboxgl.accessToken = '<%= process.env.MAP_TOKEN %>';
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        center: coordinates, // starting position [lng, lat]. Note that lat must be set between -90 and 90
+        zoom: 9 // starting zoom
+    });
+    const marker = new mapboxgl.Marker()
+        .setLngLat(coordinates)
+        .addTo(map);
+</script>
+
+
     </div>
     
 </body>

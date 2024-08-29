@@ -133,3 +133,8 @@ body{
 .show-card{
     padding-left: 10rem;
 }
+
+#map{
+    height:400px;
+    word-wrap: 80vh;
+}

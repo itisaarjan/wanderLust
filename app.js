@@ -9,18 +9,30 @@ const ejsMate = require('ejs-mate');
 const ExpressError = require('./utils/ExpressError');
 const path = require('path');
 const session = require('express-session');
+const MongoStore=require('connect-mongo');
 const flash = require('connect-flash');
 const passport=require('passport');
 const localStrategy=require('passport-local');
 const User=require('./model/user');
 
-
+const dbUrl=process.env.ATLASDB_URL;
 
 
 
 
 // Set up session and flash
+const store=MongoStore.create({
+    mongoUrl:dbUrl,
+    crypto:{
+        secret:'yourSecretKey'
+    },
+    touchAfter:24*3600,
+})
+store.on("error",()=>{
+    console.log("ERROR in MONGO SESSION STORE ",err)
+})
 app.use(session({
+    store,
     secret: 'yourSecretKey', // Replace with a strong secret key
     resave: false,
     saveUninitialized: true,
@@ -61,16 +73,14 @@ main().then(() => console.log("Database Connected Successfully")).catch(err => {
 });
 
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/wanderLust");
+    await mongoose.connect(dbUrl);
 }
 
 app.use('/listings', listingRoutes);
 app.use('/listings', reviewRoutes);
 app.use(userRoutes);
 
-app.get('/', (req, res) => {
-    res.send("Server is working");
-});
+
 
 app.all('*', (req, res, next) => {
     next(new ExpressError(404, "Page Not Found!"));
