@@ -107,4 +107,4 @@ This WanderLust project showcases the use of modern web development practices wi
 
 ---
 
-Made with ❤️ by [Your Name](https://github.com/itisaarjan)
+Made with ❤️ by [Arjan Subedi](https://github.com/itisaarjan)
